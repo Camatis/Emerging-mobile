@@ -1,97 +1,45 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Project Documentation
 
-# Getting Started
+This document outlines the steps taken to set up the React Native mobile application and the challenges encountered during the process.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## Steps Taken
 
-## Step 1: Start Metro
+1.  **Project Initialization:**
+    *   The project was initialized using the new React Native Community CLI command: `npx @react-native-community/cli init MobileApp`. This created the necessary folder structure, including the native `android` and `ios` projects.
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+2.  **Folder Structure and Code Organization:**
+    *   A `src` directory was created in the project root to organize the source code.
+    *   Inside `src`, two subdirectories were created:
+        *   `screens`: To hold the UI for each page (`LandingScreen.js`, `LoginScreen.js`, `DashboardScreen.js`).
+        *   `navigation`: To hold the navigation logic (`AppNavigator.js`).
+    *   The main `App.tsx` file was updated to render the `AppNavigator`.
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+3.  **Dependency Installation:**
+    *   The required libraries for screen-to-screen navigation were installed via npm:
+        ```sh
+        npm install @react-navigation/native @react-navigation/native-stack react-native-screens react-native-safe-area-context
+        ```
 
-```sh
-# Using npm
-npm start
+4.  **Environment Configuration:**
+    *   The `ANDROID_HOME` environment variable was set on the system to point to the location of the Android SDK.
+    *   The system's `Path` variable was updated to include the Android SDK's `platform-tools` and `emulator` directories. This allows the system to find crucial tools like `adb`.
 
-# OR using Yarn
-yarn start
-```
+5.  **Native Code Modification for Android:**
+    *   To ensure compatibility with the `react-native-screens` library, a small modification was made to the main Android activity file (`android/app/src/main/java/com/mobileapp/MainActivity.kt`) by adding the required `onCreate` method.
 
-## Step 2: Build and run your app
+## Challenges Encountered
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+1.  **Outdated CLI:**
+    *   **Error:** `TypeError: cli.init is not a function`
+    *   **Cause:** An old, globally installed version of `react-native-cli` was conflicting with the modern `npx` command.
+    *   **Solution:** The global package was uninstalled (`npm uninstall -g react-native-cli`), and the project was re-initialized using the correct community CLI command.
 
-### Android
+2.  **SDK Location Not Found:**
+    *   **Error:** `SDK location not found. Define a valid SDK location with an ANDROID_HOME...`
+    *   **Cause:** The Gradle build process could not locate the Android SDK on the development machine.
+    *   **Solution:** The `ANDROID_HOME` environment variable was created and set to the correct SDK path, resolving the issue for the build system.
 
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### iOS
-
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
-bundle exec pod install
-```
-
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
-
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
-
-## Step 3: Modify your app
-
-Now that you have successfully run the app, let's make changes!
-
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+3.  **Application Crashing on Launch:**
+    *   **Error:** The app would build successfully but crash immediately upon opening on the emulator.
+    *   **Cause:** The `react-native-screens` library, a dependency for React Navigation, requires native configuration that was missing from the default project template.
+    *   **Solution:** The `MainActivity.kt` file was updated with the necessary `onCreate` method, which stabilized the application and allowed the navigation to function correctly.
